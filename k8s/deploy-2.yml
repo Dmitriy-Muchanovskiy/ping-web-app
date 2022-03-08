@@ -1,0 +1,44 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-example-onefactor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      task: deploy-example-onefactor
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        task: deploy-example-onefactor  
+        version: 1.0.1
+    spec:
+      containers:
+      - name: deploy-example-onefactor
+        image: ping_task:1.0.1
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          failureThreshold: 3
+          successThreshold: 1
+          httpGet:
+            path: /ping
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          successThreshold: 1
+          httpGet:
+            path: /ping
+            port: 80
+          initialDelaySeconds: 12
+          timeoutSeconds: 5
+
+

@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  service-example-onefactor
+spec:
+  selector:
+    task: deploy-example-onefactor
+  type:  NodePort
+  ports:
+  - name:  port-test-java
+    protocol: TCP
+    port:  18080
+    targetPort:  80
